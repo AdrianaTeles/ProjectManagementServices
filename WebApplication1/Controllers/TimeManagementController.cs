@@ -9,6 +9,7 @@ using Application.Services.Commands;
 using Application.DTO.Responses;
 using Application.DTO.Requests;
 using Application.Services.Queries;
+using System.Web.Http.Cors;
 
 namespace WebApplication1.Controllers
 {
@@ -33,6 +34,7 @@ namespace WebApplication1.Controllers
         /// </summary>
         /// <param name="addTimeToProjectRequest">add time to project request </param>
         /// <returns></returns>
+         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPut(), ProducesResponseType(typeof(ApiResponse), 200)]
         public async Task<IActionResult> AddTimeToProject( [FromBody] AddTimeToProjectRequest addTimeToProjectRequest)
         {
@@ -48,6 +50,7 @@ namespace WebApplication1.Controllers
         /// </summary>
         /// <param name="createProjectRequest">add time to project request </param>
         /// <returns></returns>
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost(), ProducesResponseType(typeof(ApiResponse), 200)]
         public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest createProjectRequest)
         {
@@ -62,6 +65,7 @@ namespace WebApplication1.Controllers
         ///Get All projects Info
         /// </summary>
         /// <returns></returns>
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet(), ProducesResponseType(typeof(GetProjectTimeInformationsResponse), 200)]
         public async Task<IActionResult> GetProjectTimeInformations()
         {

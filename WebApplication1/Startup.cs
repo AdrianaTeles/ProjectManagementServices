@@ -13,6 +13,8 @@ namespace WebApplication1
 {
     public class Startup
     {
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,7 +34,14 @@ namespace WebApplication1
             services.ConfigureMediatR();
             // Configure Swagger
             services.UseSwaggerConfig();
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
             // Configure DbContext
             services.AddDbContext<ProjectsDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ProjectsConnectionString")));
 
@@ -50,6 +59,7 @@ namespace WebApplication1
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
