@@ -29,11 +29,11 @@ namespace WebApplication1.Controllers
 
         #region Time
         /// <summary>
-        /// Create new ticket
+        /// Add Duration
         /// </summary>
         /// <param name="addTimeToProjectRequest">add time to project request </param>
         /// <returns></returns>
-        [HttpPost(), ProducesResponseType(typeof(ApiResponse), 200)]
+        [HttpPut(), ProducesResponseType(typeof(ApiResponse), 200)]
         public async Task<IActionResult> AddTimeToProject( [FromBody] AddTimeToProjectRequest addTimeToProjectRequest)
         {
             //Validate request
@@ -44,9 +44,23 @@ namespace WebApplication1.Controllers
         }
 
         /// <summary>
-        /// Create new ticket
+        /// Create Project
         /// </summary>
-        /// <param name="addTimeToProjectRequest">add time to project request </param>
+        /// <param name="createProjectRequest">add time to project request </param>
+        /// <returns></returns>
+        [HttpPost(), ProducesResponseType(typeof(ApiResponse), 200)]
+        public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest createProjectRequest)
+        {
+            //Validate request
+            var createProjectCommand = new CreateProjectCommand(createProjectRequest);
+            var res = await Mediator.Send(createProjectCommand);
+
+            return Ok(res);
+        }
+
+        /// <summary>
+        ///Get All projects Info
+        /// </summary>
         /// <returns></returns>
         [HttpGet(), ProducesResponseType(typeof(GetProjectTimeInformationsResponse), 200)]
         public async Task<IActionResult> GetProjectTimeInformations()

@@ -15,7 +15,8 @@ namespace WebApplication1.Configurations
         {
             //Configure the mediator
             services.AddMediatR(typeof(AddTimeToProjectCommandHandler).Assembly,
-                typeof(GetProjectTimeInformationsQueryHandler).Assembly);
+                typeof(GetProjectTimeInformationsQueryHandler).Assembly,
+                typeof(CreateProjectCommandHandler).Assembly );
 
             return services;
         }
