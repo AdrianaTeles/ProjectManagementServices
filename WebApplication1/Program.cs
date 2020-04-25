@@ -20,7 +20,7 @@ namespace WebApplication1
             }
             catch (Exception ex)
             {
-                return;
+                throw ex;
             }
         }
 

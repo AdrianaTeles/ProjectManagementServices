@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
+
 namespace WebApplication1.Configurations
 {
     
@@ -19,7 +20,7 @@ namespace WebApplication1.Configurations
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time Management");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectManagement");
             });
 
             return app;
@@ -30,9 +31,25 @@ namespace WebApplication1.Configurations
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Time Management", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectManagement API", Version = "v1" });
 
-               
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {   In = ParameterLocation.Header,
+                    Description = "Please enter JWT with Bearer into field", 
+                    Name = "Authorization", 
+                    Type = SecuritySchemeType.ApiKey });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement{
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Id= "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        }, new List<string>()
+                    }
+                });
 
                 c.IgnoreObsoleteProperties();
                 c.IgnoreObsoleteActions();
@@ -41,7 +58,6 @@ namespace WebApplication1.Configurations
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-
 
             return services;
         }
