@@ -19,11 +19,15 @@ namespace Application.Services.Commands
         public async Task<ApiResponse> Handle(AddTimeToProjectCommand request, CancellationToken cancellationToken)
         {
             var project = await ProjectRepository.GetFirstOrDefaultAsync(x => x.Id == request.Request.projectId);
+            TimeSpan durationToAdd = TimeSpan.Parse(request.Request.time.ToString());
+            TimeSpan previousDuration = TimeSpan.Parse(project.Duration);
+
+            var totalDuration = previousDuration + durationToAdd;
 
             #region Update postgresql database
             try
             {
-               project.Duration = request.Request.time.ToString();
+               project.Duration = totalDuration.ToString();
 
 
                 ProjectRepository.Update(project);
