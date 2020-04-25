@@ -19,6 +19,9 @@ namespace Application.Services.Commands
         public async Task<ApiResponse> Handle(AddTimeToProjectCommand request, CancellationToken cancellationToken)
         {
             var project = await ProjectRepository.GetFirstOrDefaultAsync(x => x.Id == request.Request.projectId);
+            if (project == null)
+                return new ApiResponse(200, true, new List<string>() { "Error getting project from DB" });
+
             TimeSpan durationToAdd = TimeSpan.Parse(request.Request.time.ToString());
             TimeSpan previousDuration = TimeSpan.Parse(project.Duration);
 
